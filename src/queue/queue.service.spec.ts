@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { QueueService } from './queue.service';
 import * as amqp from 'amqplib';
+import { ConfigService } from '@nestjs/config';
 
 describe('QueueService', () => {
   let service: QueueService;
@@ -8,7 +9,6 @@ describe('QueueService', () => {
   let mockConnection: Partial<amqp.Connection>;
 
   beforeEach(async () => {
-    // Mocks
     mockChannel = {
       assertQueue: jest.fn().mockResolvedValue(undefined),
       sendToQueue: jest.fn().mockResolvedValue(undefined),
@@ -19,12 +19,17 @@ describe('QueueService', () => {
       createChannel: jest.fn().mockResolvedValue(mockChannel as amqp.Channel),
     };
 
-    // Mock da função amqp.connect
     jest.spyOn(amqp, 'connect').mockResolvedValue(mockConnection as amqp.Connection);
 
-    // Criação do módulo de testes
+    const mockConfigService = {
+      get: jest.fn().mockReturnValue('amqp://localhost'),
+    };
+    
     const module: TestingModule = await Test.createTestingModule({
-      providers: [QueueService],
+      providers: [
+        QueueService,
+        { provide: ConfigService, useValue: mockConfigService },
+      ],
     }).compile();
 
     service = module.get<QueueService>(QueueService);
@@ -32,7 +37,6 @@ describe('QueueService', () => {
 
   describe('init', () => {
     it('should initialize connection and channel', async () => {
-      // Teste a chamada para a inicialização
       await expect(service['init']()).resolves.not.toThrow();
 
       expect(amqp.connect).toHaveBeenCalledWith('amqp://localhost');

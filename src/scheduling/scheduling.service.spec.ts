@@ -54,10 +54,10 @@ describe('SchedulingService', () => {
         data: mockAppointments,
         status: 200,
         statusText: 'OK',
-        headers: {}, // Headers podem ser um objeto vazio ou mockado conforme necessário
+        headers: {},
         config: {
           headers: undefined
-        }, // Configuração pode ser um objeto vazio ou mockado conforme necessário
+        },
       };
 
       jest.spyOn(httpService, 'get').mockImplementation(() =>
