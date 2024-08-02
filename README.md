@@ -7,4 +7,3 @@
 - Technologies: NestJS, @nestjs/schedule for task scheduling, @nestjs/microservices for integration with queues.
 
 ![alt text](image.png)
-                                  
