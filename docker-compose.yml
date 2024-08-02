@@ -1,26 +1,27 @@
-version: '3'
+version: '3.8'
+
 services:
   rabbitmq:
-    image: rabbitmq:management
+    image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - '5672:5672'      # RabbitMQ default port
-      - '15672:15672'    # RabbitMQ Management Console port
-    environment:
-      RABBITMQ_DEFAULT_USER: user
-      RABBITMQ_DEFAULT_PASS: password
+      - "5672:5672"
+      - "15672:15672" # Management console
     networks:
-      - rabbitmq-network
+      - mynetwork
 
   app:
-    build: .
-    environment:
-      RABBITMQ_URL: amqp://user:password@rabbitmq:5672
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs_app
     depends_on:
       - rabbitmq
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq
     networks:
-      - rabbitmq-network
+      - mynetwork
 
 networks:
-  rabbitmq-network:
+  mynetwork:
     driver: bridge
