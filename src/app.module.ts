@@ -1,11 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ScheduleModule } from '@nestjs/schedule';
+import { HttpModule } from '@nestjs/axios';
 import { QueueModule } from './queue/queue.module';
+import { SchedulingModule } from './scheduling/scheduling.module';
 
 @Module({
-  imports: [QueueModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ScheduleModule.forRoot(),
+    HttpModule,
+    QueueModule,
+    SchedulingModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
