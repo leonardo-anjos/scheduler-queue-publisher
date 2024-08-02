@@ -1,0 +1,31 @@
+# Node modules directory
+node_modules
+
+# Build output
+dist
+
+# Environment files
+.env
+.env.local
+
+# Logs
+*.log
+
+# Dockerfile and Docker-related files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# IDE/editor folders and files
+.vscode
+.idea
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage
+
+# npm cache
+.npm
