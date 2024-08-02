@@ -3,7 +3,7 @@ import * as amqp from 'amqplib';
 
 @Injectable()
 export class QueueService {
-  private readonly queueName = 'agendamentos_queue';
+  private readonly queueName = 'appointments_queue';
   private channel: amqp.Channel;
 
   constructor() {
@@ -16,8 +16,8 @@ export class QueueService {
     await this.channel.assertQueue(this.queueName, { durable: true });
   }
 
-  async addToQueue(agendamento: any) {
-    await this.channel.sendToQueue(this.queueName, Buffer.from(JSON.stringify(agendamento)), {
+  async addToQueue(appointment: any) {
+    await this.channel.sendToQueue(this.queueName, Buffer.from(JSON.stringify(appointment)), {
       persistent: true,
     });
   }

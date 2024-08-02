@@ -1,6 +1,7 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { QueueService } from '../queue/queue.service';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class SchedulingService {
@@ -11,19 +12,19 @@ export class SchedulingService {
     private readonly queueService: QueueService,
   ) {}
 
-  @Cron('0 0 * * *') // Executa à meia-noite
+  @Cron('0 0 * * *') // Runs at midnight
   async clearQueue() {
     await this.queueService.clearQueue();
   }
 
-  @Cron('0 0 * * * *') // Executa a cada minuto (para fins de demonstração)
-  async fetchAndQueueAgendamentos() {
+  @Cron('0 0 * * * *') // Runs every minute
+  async fetchAndQueueAppointments() {
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
     const response = await this.httpService.get(`${this.apiUrl}?date=${today}`).toPromise();
-    const agendamentos = response.data;
+    const appointments = response.data;
 
-    for (const agendamento of agendamentos) {
-      await this.queueService.addToQueue(agendamento);
+    for (const appointment of appointments) {
+      await this.queueService.addToQueue(appointment);
     }
   }
 }
